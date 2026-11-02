@@ -1,5 +1,6 @@
 # Ex. No:1b 			Study of Client Server Chat Applications
-
+## REGNO: 212225040117
+## NAME: HARISH PRANAV
 ## Aim: 
 To perform a study on Client Server Chat Applications
 ## Introduction:
@@ -72,6 +73,71 @@ User authentication mechanisms are essential to ensure secure and authorized acc
 Client-server chat applications are versatile tools that facilitate real-time communication between users over a network. They incorporate various components, including server-side and client-side elements, and must consider factors such as security, scalability, and concurrency. As technology continues to advance, client-server chat applications remain integral for collaborative communication in various domains.
 
 Client-server chat applications are foundational to real-time communication over networks. They incorporate principles of socket programming, communication protocols, and security mechanisms to provide a seamless user experience. Understanding the basics of client-server chat applications is essential for developers involved in networked application development, as they form the backbone of various collaborative communication systems. As technology evolves, chat applications continue to adapt, incorporating new features and technologies to enhance user interaction and connectivity.
+
+## PROGRAM :
+
+## `SERVER`
+```python
+import socket
+
+HOST = "127.0.0.1"
+PORT = 9999
+
+with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as server:
+    server.bind((HOST, PORT))
+    server.listen()
+    print("Server waiting for a client...")
+
+    connection, address = server.accept()
+
+    with connection:
+        print("Connected by", address)
+
+        while True:
+            message = connection.recv(1024).decode("utf-8")
+
+            if not message or message.lower() == "quit":
+                print("Client left the chat.")
+                break
+
+            print("Client:", message)
+            reply = input("You: ")
+            connection.sendall(reply.encode("utf-8"))
+
+            if reply.lower() == "quit":
+                break
+```
+### `CLIENT`
+```python
+import socket
+
+HOST = "127.0.0.1"
+PORT = 9999
+
+with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as client:
+    client.connect((HOST, PORT))
+    print("Connected to the chat. Type quit to leave.")
+
+    while True:
+        message = input("You: ")
+        client.sendall(message.encode("utf-8"))
+
+        if message.lower() == "quit":
+            break
+
+        reply = client.recv(1024).decode("utf-8")
+
+        if not reply:
+            print("Server disconnected.")
+            break
+
+        print("Server:", reply)
+
+        if reply.lower() == "quit":
+            break
+```
+## OUTPUT :
+<img width="1150" height="313" alt="image" src="https://github.com/user-attachments/assets/25bd0ef8-b4be-412b-bfd7-4bbff90825c0" />
 
 
 ## Result:
